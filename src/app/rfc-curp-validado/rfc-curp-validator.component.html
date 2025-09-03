@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Validador RFC y CURP</h2>
+        <p class="card-description">Herramienta para la validación de Registro Federal de Contribuyentes y Clave Única de Registro de Población</p>
+    </div>
+
+    <div class="card-body">
+        <div class="form-section">
+            <h3 class="section-title">Datos del Contribuyente</h3>
+
+            <div class="form-group">
+                <label for="curp" class="form-label">CURP (Clave Única de Registro de Población)</label>
+                <div class="input-container">
+                    <input
+                        type="text"
+                        id="curp"
+                        class="form-control"
+                        [(ngModel)]="curp"
+                        placeholder="Ingrese CURP de 18 caracteres"
+                        maxlength="18"
+                        (input)="clearResults()"
+                    >
+                </div>
+                <div class="form-text">
+                    <span>Formato: 4 letras + 6 números + H/M + 5 letras + 2 números</span>
+                    <span>{{ curp.length || 0 }}/18</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="rfc" class="form-label">RFC (Registro Federal de Contribuyentes)</label>
+                <div class="input-container">
+                    <input
+                        type="text"
+                        id="rfc"
+                        class="form-control"
+                        [(ngModel)]="rfc"
+                        placeholder="Ingrese RFC de 12-13 caracteres"
+                        maxlength="13"
+                        (input)="clearResults()"
+                    >
+                </div>
+                <div class="form-text">
+                    <span>Formato: 3-4 letras + 6 números + 2-3 caracteres</span>
+                    <span>{{ rfc.length || 0 }}/13</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="section-title">Opciones de Validación</h3>
+
+            <div class="buttons-grid">
+                <button
+                    class="btn btn-primary"
+                    (click)="validateCurp()"
+                    [disabled]="!curp || curp.length < 18"
+                >
+                    <span class="btn-icon">📋</span>
+                    Validar CURP
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    (click)="validateRfc()"
+                    [disabled]="!rfc || rfc.length < 12"
+                >
+                    <span class="btn-icon">📄</span>
+                    Validar RFC
+                </button>
+
+                <button
+                    class="btn btn-warning"
+                    (click)="validateMatch()"
+                    [disabled]="!curp || !rfc || curp.length < 18 || rfc.length < 12"
+                >
+                    <span class="btn-icon">🔗</span>
+                    Validar Coincidencia
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="showResult" class="alert fade-in" [ngClass]="'alert-' + resultType">
+            <div class="alert-title">{{ resultTitle }}</div>
+            <div class="alert-content" [innerHTML]="resultMessage"></div>
+        </div>
+
+        <div *ngIf="showFormatInfo" class="info-panel">
+            <div class="info-title">INFORMACIÓN TÉCNICA</div>
+            <div class="info-content">
+                <strong>CURP:</strong> Documento de identificación único de 18 caracteres alfanuméricos que identifica de manera individual a cada persona registrada ante el Registro Nacional de Población.<br><br>
+                <strong>RFC:</strong> Registro Federal de Contribuyentes de 12 o 13 caracteres que identifica a personas físicas y morales ante el SAT para efectos fiscales.<br><br>
+                <strong>Validación de Coincidencia:</strong> Verificación de que los primeros 10 caracteres de ambos documentos correspondan a la misma persona física.
+            </div>
+        </div>
+    </div>
+</div>
